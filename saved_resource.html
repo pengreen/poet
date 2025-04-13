@@ -1,0 +1,1726 @@
+<!DOCTYPE html>
+<!-- saved from url=(0140)https://b8wkkv61rfd2fspx.canva-hosted-embed.com/codelet/AAEAEGI4d2trdjYxcmZkMmZzcHgAAAAAAZYx-HIQp19LcjJtsN8zU4gfqeN15j8FQsB_AiMVpqIawRuCl_I/ -->
+<html lang="pt-BR" style="--primary-color-rgb: 0, 113, 227;" data-lt-installed="true"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PoetaScript - Editor de Poesia</title>
+    <link href="./css2" rel="stylesheet">
+    <link href="./css2(1)" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #0071e3;
+            --secondary-color: #f5f5f7;
+            --text-color: #1d1d1f;
+            --border-color: #d2d2d7;
+            --success-color: #4CAF50;
+            --warning-color: #ff3b30;
+            --highlight-color: #0071e3;
+            --background-color: #ffffff;
+            --sidebar-color: #f5f5f7;
+            --editor-background: #ffffff;
+            --footnote-background: #f9f9f9;
+            --font-family: 'Inter', sans-serif;
+        }
+        
+        /* Theme: Dark */
+        .theme-dark {
+            --primary-color: #0a84ff;
+            --secondary-color: #2c2c2e;
+            --text-color: #f5f5f7;
+            --border-color: #3a3a3c;
+            --success-color: #30d158;
+            --warning-color: #ff453a;
+            --highlight-color: #0a84ff;
+            --background-color: #1c1c1e;
+            --sidebar-color: #2c2c2e;
+            --editor-background: #1c1c1e;
+            --footnote-background: #2c2c2e;
+        }
+        
+        /* Theme: Kindle */
+        .theme-kindle {
+            --primary-color: #1f6300;
+            --secondary-color: #f2f4e6;
+            --text-color: #2e2e2e;
+            --border-color: #c5d4b8;
+            --success-color: #4d8c40;
+            --warning-color: #d12f1f;
+            --highlight-color: #1f6300;
+            --background-color: #f2f4e6;
+            --sidebar-color: #e6e9d8;
+            --editor-background: #f2f4e6;
+            --footnote-background: #e6e9d8;
+        }
+        
+        /* Theme: Sepia */
+        .theme-sepia {
+            --primary-color: #704214;
+            --secondary-color: #f4ecd8;
+            --text-color: #5b4636;
+            --border-color: #d8c8b8;
+            --success-color: #7d9d64;
+            --warning-color: #c25b56;
+            --highlight-color: #704214;
+            --background-color: #f4ecd8;
+            --sidebar-color: #efe5d4;
+            --editor-background: #f4ecd8;
+            --footnote-background: #efe5d4;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: var(--font-family);
+        }
+        
+        body {
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.5;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+        
+        /* Header Styles */
+        header {
+            background-color: var(--background-color);
+            border-bottom: 1px solid var(--border-color);
+            padding: 10px 20px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+        
+        .title-input {
+            width: 100%;
+            padding: 8px 12px;
+            font-size: 18px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            background-color: var(--editor-background);
+            color: var(--text-color);
+            margin-bottom: 10px;
+        }
+        
+        /* Toolbar Styles */
+        .toolbar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            padding: 10px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .toolbar-group {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            padding: 0 10px;
+            border-right: 1px solid var(--border-color);
+        }
+        
+        .toolbar-group:last-child {
+            border-right: none;
+        }
+        
+        button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 5px 8px;
+            border-radius: 4px;
+            font-size: 14px;
+            color: var(--text-color);
+            transition: background-color 0.2s;
+        }
+        
+        button:hover {
+            background-color: var(--secondary-color);
+        }
+        
+        button.active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        select {
+            padding: 5px;
+            border-radius: 4px;
+            border: 1px solid var(--border-color);
+            font-size: 14px;
+            background-color: var(--editor-background);
+            color: var(--text-color);
+        }
+        
+        .color-picker {
+            width: 24px;
+            height: 24px;
+            padding: 0;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        
+        .color-picker input {
+            width: 150%;
+            height: 150%;
+            margin: -25%;
+            cursor: pointer;
+        }
+        
+        /* Main Content */
+        .main-content {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+        }
+        
+        /* Sidebar Styles */
+        .sidebar {
+            width: 250px;
+            background-color: var(--sidebar-color);
+            padding: 20px;
+            overflow-y: auto;
+            border-right: 1px solid var(--border-color);
+        }
+        
+        .sidebar h3 {
+            margin-bottom: 15px;
+            font-size: 16px;
+        }
+        
+        .poetry-styles {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .poetry-style {
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        
+        .poetry-style:hover {
+            background-color: rgba(var(--primary-color-rgb), 0.1);
+        }
+        
+        .poetry-style.active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        /* Theme selector */
+        .theme-selector {
+            margin-top: 20px;
+        }
+        
+        .theme-selector h3 {
+            margin-bottom: 10px;
+        }
+        
+        .theme-buttons {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        
+        .theme-button {
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            border: 1px solid var(--border-color);
+        }
+        
+        .theme-button.active {
+            border: 2px solid var(--primary-color);
+        }
+        
+        /* Editor Styles */
+        .editor-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        
+        .style-info {
+            padding: 15px 20px;
+            background-color: var(--sidebar-color);
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .style-info h2 {
+            margin-bottom: 10px;
+            font-size: 18px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .style-info p {
+            margin-bottom: 5px;
+            font-size: 14px;
+            color: var(--text-color);
+            opacity: 0.8;
+        }
+        
+        .toggle-free-mode {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        
+        .toggle-free-mode.active {
+            background-color: #666;
+        }
+        
+        .editor-wrapper {
+            flex: 1;
+            display: flex;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .line-info {
+            display: flex;
+            background-color: var(--sidebar-color);
+            user-select: none;
+            overflow-y: hidden;
+            border-right: 1px solid var(--border-color);
+        }
+        
+        .line-numbers {
+            width: 40px;
+            padding: 20px 5px;
+            text-align: right;
+            color: var(--text-color);
+            opacity: 0.6;
+            font-size: 14px;
+        }
+        
+        .rhyme-scheme {
+            width: 30px;
+            padding: 20px 5px;
+            text-align: center;
+            color: var(--text-color);
+            opacity: 0.6;
+            font-size: 14px;
+        }
+        
+        .editor {
+            flex: 1;
+            padding: 20px;
+            outline: none;
+            font-size: 16px;
+            line-height: 1.8;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            position: relative;
+            background-color: var(--editor-background);
+            color: var(--text-color);
+        }
+        
+        .editor:focus {
+            outline: none;
+        }
+        
+        .verse {
+            margin-bottom: 5px;
+            padding: 2px 0;
+            border-radius: 2px;
+            position: relative;
+            min-height: 1.8em;
+        }
+        
+        .verse.correct {
+            color: var(--success-color);
+        }
+        
+        .verse.incorrect {
+            color: var(--warning-color);
+        }
+        
+        .verse-info {
+            position: absolute;
+            right: -80px;
+            top: 0;
+            font-size: 12px;
+            color: var(--text-color);
+            opacity: 0.6;
+        }
+        
+        .stanza-break {
+            height: 20px;
+        }
+        
+        /* Footnotes */
+        .footnote-marker {
+            vertical-align: super;
+            font-size: 0.7em;
+            color: var(--primary-color);
+            cursor: pointer;
+            font-weight: bold;
+        }
+        
+        .footnotes-container {
+            border-top: 1px solid var(--border-color);
+            padding: 15px 20px;
+            background-color: var(--footnote-background);
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        
+        .footnotes-container h3 {
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+        
+        .footnote {
+            display: flex;
+            margin-bottom: 8px;
+            font-size: 12px;
+            font-style: italic;
+        }
+        
+        .footnote-number {
+            min-width: 20px;
+            color: var(--primary-color);
+            font-weight: bold;
+        }
+        
+        .footnote-text {
+            flex: 1;
+        }
+        
+        .footnote-actions {
+            margin-left: 10px;
+        }
+        
+        .footnote-actions button {
+            padding: 2px 5px;
+            font-size: 12px;
+        }
+        
+        /* Context Menu */
+        .context-menu {
+            position: absolute;
+            background-color: var(--editor-background);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 5px 0;
+            z-index: 1000;
+            display: none;
+        }
+        
+        .context-menu-item {
+            padding: 8px 15px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        
+        .context-menu-item:hover {
+            background-color: var(--secondary-color);
+        }
+        
+        /* Status Bar */
+        .status-bar {
+            padding: 8px 20px;
+            background-color: var(--sidebar-color);
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: var(--text-color);
+            opacity: 0.8;
+        }
+        
+        /* Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            display: none;
+        }
+        
+        .modal {
+            background-color: var(--editor-background);
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            width: 400px;
+            max-width: 90%;
+            padding: 20px;
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .modal-title {
+            font-size: 18px;
+            font-weight: 600;
+        }
+        
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            color: var(--text-color);
+        }
+        
+        .modal-body {
+            margin-bottom: 20px;
+        }
+        
+        .modal-body textarea {
+            width: 100%;
+            height: 100px;
+            padding: 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            resize: vertical;
+            font-family: var(--font-family);
+            background-color: var(--editor-background);
+            color: var(--text-color);
+        }
+        
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+        
+        .modal-button {
+            padding: 8px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            border: none;
+        }
+        
+        .modal-button-primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .modal-button-secondary {
+            background-color: var(--secondary-color);
+            color: var(--text-color);
+        }
+        
+        /* Export Modal */
+        .export-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .export-option {
+            flex: 1;
+            min-width: 80px;
+            padding: 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .export-option:hover {
+            background-color: var(--secondary-color);
+        }
+        
+        .export-option.selected {
+            border-color: var(--primary-color);
+            background-color: rgba(var(--primary-color-rgb), 0.1);
+        }
+        
+        .export-option-icon {
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 200px;
+            }
+            
+            .toolbar {
+                flex-wrap: wrap;
+            }
+            
+            .toolbar-group {
+                padding: 5px;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .main-content {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                max-height: 200px;
+            }
+        }
+    </style>
+<meta id="dcngeagmmhegagicpcmpinaoklddcgon"></head>
+<body class="theme-kindle">
+    <div class="container">
+        <header>
+            <div class="logo">PoetaScript</div>
+            <input type="text" class="title-input" placeholder="Título da poesia..." aria-label="Título da poesia">
+            <div class="toolbar">
+                <div class="toolbar-group">
+                    <select id="font-family">
+                        <option value="Inter">Inter</option>
+                        <option value="Playfair Display">Playfair Display</option>
+                        <option value="Roboto">Roboto</option>
+                        <option value="Lora">Lora</option>
+                        <option value="Merriweather">Merriweather</option>
+                        <option value="Montserrat">Montserrat</option>
+                        <option value="Open Sans">Open Sans</option>
+                        <option value="Raleway">Raleway</option>
+                        <option value="Source Sans Pro">Source Sans Pro</option>
+                        <option value="Ubuntu">Ubuntu</option>
+                        <option value="Poppins">Poppins</option>
+                        <option value="Nunito">Nunito</option>
+                        <option value="Oswald">Oswald</option>
+                        <option value="Lato">Lato</option>
+                        <option value="Roboto Slab">Roboto Slab</option>
+                        <option value="PT Serif">PT Serif</option>
+                        <option value="Crimson Text">Crimson Text</option>
+                        <option value="Libre Baskerville">Libre Baskerville</option>
+                        <option value="Noto Serif">Noto Serif</option>
+                        <option value="Cormorant Garamond">Cormorant Garamond</option>
+                        <option value="EB Garamond">EB Garamond</option>
+                        <option value="Fira Sans">Fira Sans</option>
+                        <option value="Work Sans">Work Sans</option>
+                        <option value="Quicksand">Quicksand</option>
+                        <option value="Karla">Karla</option>
+                    </select>
+                    <select id="font-size">
+                        <option value="12px">12</option>
+                        <option value="14px">14</option>
+                        <option value="16px" selected="">16</option>
+                        <option value="18px">18</option>
+                        <option value="20px">20</option>
+                        <option value="24px">24</option>
+                        <option value="28px">28</option>
+                        <option value="32px">32</option>
+                        <option value="36px">36</option>
+                        <option value="42px">42</option>
+                        <option value="48px">48</option>
+                    </select>
+                </div>
+                <div class="toolbar-group">
+                    <button id="bold" title="Negrito"><strong>B</strong></button>
+                    <button id="italic" title="Itálico"><em>I</em></button>
+                    <button id="underline" title="Sublinhado"><u>U</u></button>
+                    <button id="strikethrough" title="Tachado"><s>S</s></button>
+                </div>
+                <div class="toolbar-group">
+                    <button id="align-left" title="Alinhar à esquerda">⫷</button>
+                    <button id="align-center" title="Centralizar">≡</button>
+                    <button id="align-right" title="Alinhar à direita">⫸</button>
+                    <button id="align-justify" title="Justificar">≣</button>
+                </div>
+                <div class="toolbar-group">
+                    <div class="color-picker">
+                        <input type="color" id="text-color" title="Cor do texto">
+                    </div>
+                    <div class="color-picker">
+                        <input type="color" id="bg-color" value="#ffffff" title="Cor de fundo">
+                    </div>
+                </div>
+                <div class="toolbar-group">
+                    <button id="undo" title="Desfazer">↩</button>
+                    <button id="redo" title="Refazer">↪</button>
+                </div>
+                <div class="toolbar-group">
+                    <button id="save" title="Salvar">Salvar</button>
+                    <button id="export" title="Exportar">Exportar</button>
+                </div>
+            </div>
+        </header>
+        
+        <div class="main-content">
+            <aside class="sidebar">
+                <h3>Estilos Poéticos</h3>
+                <div class="poetry-styles">
+                    <div class="poetry-style active" data-style="soneto">Soneto</div>
+                    <div class="poetry-style" data-style="ode">Ode</div>
+                    <div class="poetry-style" data-style="haicai">Haicai</div>
+                    <div class="poetry-style" data-style="lirica">Lírica</div>
+                    <div class="poetry-style" data-style="epico">Épico</div>
+                    <div class="poetry-style" data-style="balada">Balada</div>
+                    <div class="poetry-style" data-style="verso-livre">Verso Livre</div>
+                    <div class="poetry-style" data-style="simbolismo">Simbolismo</div>
+                    <div class="poetry-style" data-style="romantismo">Romantismo</div>
+                    <div class="poetry-style" data-style="modernismo">Modernismo</div>
+                    <div class="poetry-style" data-style="limerique">Limerique</div>
+                    <div class="poetry-style" data-style="elegia">Elegia</div>
+                    <div class="poetry-style" data-style="villanelle">Villanelle</div>
+                    <div class="poetry-style" data-style="rondo">Rondó</div>
+                    <div class="poetry-style" data-style="sestina">Sestina</div>
+                    <div class="poetry-style" data-style="terza-rima">Terza Rima</div>
+                    <div class="poetry-style" data-style="pantum">Pantum</div>
+                    <div class="poetry-style" data-style="ghazal">Ghazal</div>
+                    <div class="poetry-style" data-style="acrostico">Acróstico</div>
+                    <div class="poetry-style" data-style="decima">Décima</div>
+                    <div class="poetry-style" data-style="visual">Poesia Visual</div>
+                    <div class="poetry-style" data-style="prosa">Poema em Prosa</div>
+                    <div class="poetry-style" data-style="concreta">Poesia Concreta</div>
+                    <div class="poetry-style" data-style="dramatico">Dramático</div>
+                    <div class="poetry-style" data-style="satirico">Satírico</div>
+                </div>
+                
+                <div class="theme-selector">
+                    <h3>Tema</h3>
+                    <div class="theme-buttons">
+                        <button class="theme-button" data-theme="light">Claro</button>
+                        <button class="theme-button" data-theme="dark">Escuro</button>
+                        <button class="theme-button active" data-theme="kindle">Verde Claro</button>
+                        <button class="theme-button" data-theme="sepia">Sépia</button>
+                    </div>
+                </div>
+            </aside>
+            
+            <div class="editor-container">
+                <div class="style-info">
+                    <h2>
+                        <span>Soneto</span>
+                        <button class="toggle-free-mode">Modo Livre: Desativado</button>
+                    </h2>
+                    <p><strong>Estrutura:</strong> 14 versos, divididos em 2 quartetos + 2 tercetos</p>
+                    <p><strong>Métrica:</strong> Decassílabo (10 sílabas poéticas)</p>
+                    <p><strong>Esquema de rimas:</strong> ABBA ABBA CDC DCD (Petrarquiano)</p>
+                </div>
+                
+                <div class="editor-wrapper"><template shadowrootmode="closed"><lt-highlighter contenteditable="false" class="lt-highlighter--grid-item" style="display: none; z-index: 1 !important;"><lt-div spellcheck="false" class="lt-highlighter__wrapper" style="width: 1569px !important; height: 562px !important; transform: none !important; transform-origin: 792px 281px !important; zoom: 1 !important; margin-left: 71px !important;"><lt-div class="lt-highlighter__scroll-element" style="top: 0px !important; left: 0px !important; width: 1569px !important; height: 577px !important;"><canvas class="lt-highlighter__canvas" width="54" height="21" style="display: none; top: 26px !important; left: 271px !important;"></canvas></lt-div></lt-div></lt-highlighter><slot style="color-scheme: inherit; forced-color-adjust: inherit; mask: inherit; math-depth: inherit; position: inherit; position-anchor: inherit; text-size-adjust: inherit; appearance: inherit; color: inherit; font: inherit; font-palette: inherit; font-synthesis: inherit; position-area: inherit; text-orientation: inherit; text-rendering: inherit; text-spacing-trim: inherit; -webkit-font-smoothing: inherit; -webkit-locale: inherit; -webkit-text-orientation: inherit; -webkit-writing-mode: inherit; writing-mode: inherit; zoom: inherit; accent-color: inherit; place-content: inherit; place-items: inherit; place-self: inherit; alignment-baseline: inherit; anchor-name: inherit; anchor-scope: inherit; animation-composition: inherit; animation: inherit; app-region: inherit; aspect-ratio: inherit; backdrop-filter: inherit; backface-visibility: inherit; background: inherit; background-blend-mode: inherit; baseline-shift: inherit; baseline-source: inherit; block-size: inherit; border-block: inherit; border: inherit; border-radius: inherit; border-collapse: inherit; border-end-end-radius: inherit; border-end-start-radius: inherit; border-inline: inherit; border-start-end-radius: inherit; border-start-start-radius: inherit; inset: inherit; box-decoration-break: inherit; box-shadow: inherit; box-sizing: inherit; break-after: inherit; break-before: inherit; break-inside: inherit; buffered-rendering: inherit; caption-side: inherit; caret-color: inherit; clear: inherit; clip: inherit; clip-path: inherit; clip-rule: inherit; color-interpolation: inherit; color-interpolation-filters: inherit; color-rendering: inherit; columns: inherit; column-fill: inherit; gap: inherit; column-rule: inherit; column-span: inherit; contain: inherit; contain-intrinsic-block-size: inherit; contain-intrinsic-size: inherit; contain-intrinsic-inline-size: inherit; container: inherit; content: inherit; content-visibility: inherit; counter-increment: inherit; counter-reset: inherit; counter-set: inherit; cursor: inherit; cx: inherit; cy: inherit; d: inherit; display: contents; dominant-baseline: inherit; dynamic-range-limit: inherit; empty-cells: inherit; field-sizing: inherit; fill: inherit; fill-opacity: inherit; fill-rule: inherit; filter: inherit; flex: inherit; flex-flow: inherit; float: inherit; flood-color: inherit; flood-opacity: inherit; grid: inherit; grid-area: inherit; height: inherit; hyphenate-character: inherit; hyphenate-limit-chars: inherit; hyphens: inherit; image-orientation: inherit; image-rendering: inherit; initial-letter: inherit; inline-size: inherit; inset-block: inherit; inset-inline: inherit; interpolate-size: inherit; isolation: inherit; letter-spacing: inherit; lighting-color: inherit; line-break: inherit; list-style: inherit; margin-block: inherit; margin: inherit; margin-inline: inherit; marker: inherit; mask-type: inherit; math-shift: inherit; math-style: inherit; max-block-size: inherit; max-height: inherit; max-inline-size: inherit; max-width: inherit; min-block-size: inherit; min-height: inherit; min-inline-size: inherit; min-width: inherit; mix-blend-mode: inherit; object-fit: inherit; object-position: inherit; object-view-box: inherit; offset: inherit; opacity: inherit; order: inherit; orphans: inherit; outline: inherit; outline-offset: inherit; overflow-anchor: inherit; overflow-block: inherit; overflow-clip-margin: inherit; overflow-inline: inherit; overflow-wrap: inherit; overflow: inherit; overlay: inherit; overscroll-behavior-block: inherit; overscroll-behavior-inline: inherit; overscroll-behavior: inherit; padding-block: inherit; padding: inherit; padding-inline: inherit; page: inherit; page-orientation: inherit; paint-order: inherit; perspective: inherit; perspective-origin: inherit; pointer-events: inherit; position-try: inherit; position-visibility: inherit; print-color-adjust: inherit; quotes: inherit; r: inherit; reading-flow: inherit; reading-order: inherit; resize: inherit; rotate: inherit; ruby-align: inherit; ruby-position: inherit; rx: inherit; ry: inherit; scale: inherit; scroll-behavior: inherit; scroll-initial-target: inherit; scroll-margin-block: inherit; scroll-margin: inherit; scroll-margin-inline: inherit; scroll-marker-group: inherit; scroll-padding-block: inherit; scroll-padding: inherit; scroll-padding-inline: inherit; scroll-snap-align: inherit; scroll-snap-stop: inherit; scroll-snap-type: inherit; scroll-timeline: inherit; scrollbar-color: inherit; scrollbar-gutter: inherit; scrollbar-width: inherit; shape-image-threshold: inherit; shape-margin: inherit; shape-outside: inherit; shape-rendering: inherit; size: inherit; speak: inherit; stop-color: inherit; stop-opacity: inherit; stroke: inherit; stroke-dasharray: inherit; stroke-dashoffset: inherit; stroke-linecap: inherit; stroke-linejoin: inherit; stroke-miterlimit: inherit; stroke-opacity: inherit; stroke-width: inherit; tab-size: inherit; table-layout: inherit; text-align: inherit; text-align-last: inherit; text-anchor: inherit; text-box: inherit; text-combine-upright: inherit; text-decoration: inherit; text-decoration-skip-ink: inherit; text-emphasis: inherit; text-emphasis-position: inherit; text-indent: inherit; text-overflow: inherit; text-shadow: inherit; text-transform: inherit; text-underline-offset: inherit; text-underline-position: inherit; text-wrap: inherit; timeline-scope: inherit; touch-action: inherit; transform: inherit; transform-box: inherit; transform-origin: inherit; transform-style: inherit; transition: inherit; translate: inherit; user-select: inherit; vector-effect: inherit; vertical-align: inherit; view-timeline: inherit; view-transition-class: inherit; view-transition-name: inherit; visibility: inherit; border-spacing: inherit; -webkit-box-align: inherit; -webkit-box-decoration-break: inherit; -webkit-box-direction: inherit; -webkit-box-flex: inherit; -webkit-box-ordinal-group: inherit; -webkit-box-orient: inherit; -webkit-box-pack: inherit; -webkit-box-reflect: inherit; -webkit-line-break: inherit; -webkit-line-clamp: inherit; -webkit-mask-box-image: inherit; -webkit-rtl-ordering: inherit; -webkit-ruby-position: inherit; -webkit-tap-highlight-color: inherit; -webkit-text-combine: inherit; -webkit-text-decorations-in-effect: inherit; -webkit-text-fill-color: inherit; -webkit-text-security: inherit; -webkit-text-stroke: inherit; -webkit-user-drag: inherit; white-space-collapse: inherit; widows: inherit; width: inherit; will-change: inherit; word-break: inherit; word-spacing: inherit; x: inherit; y: inherit; z-index: inherit;"></slot><link href="chrome-extension://oldceeleldhonbafppcapldpdifcinji/content/styles/shadow.css" rel="stylesheet"></template>
+                    <div class="line-info">
+                        <div class="line-numbers"><div>1</div><div>2</div><div>3</div><div>4</div><div>&nbsp;</div><div>5</div><div>6</div><div>7</div><div>8</div><div>&nbsp;</div><div>9</div><div>10</div><div>11</div><div>&nbsp;</div><div>12</div><div>13</div><div>14</div></div>
+                        <div class="rhyme-scheme"><div>A</div><div>B</div><div>B</div><div>A</div><div>&nbsp;</div><div>A</div><div>B</div><div>B</div><div>A</div><div>&nbsp;</div><div>C</div><div>D</div><div>C</div><div>&nbsp;</div><div>D</div><div>C</div><div>D</div></div>
+                    </div>
+                    
+                    <div class="editor" contenteditable="true" spellcheck="false" data-lt-tmp-id="lt-233485" data-gramm="false"><div class="verse incorrect" data-line="1">Escreva aqui o primeiro verso do soneto</div><div class="verse" data-line="2"></div><div class="verse" data-line="3"></div><div class="verse" data-line="4"></div><div class="stanza-break"></div><div class="verse" data-line="5"></div><div class="verse" data-line="6"></div><div class="verse" data-line="7"></div><div class="verse" data-line="8"></div><div class="stanza-break"></div><div class="verse" data-line="9"></div><div class="verse" data-line="10"></div><div class="verse" data-line="11"></div><div class="stanza-break"></div><div class="verse" data-line="12"></div><div class="verse" data-line="13"></div><div class="verse" data-line="14"></div></div>
+                </div>
+                
+                <div class="footnotes-container" style="display: none;">
+                    <h3>Anotações</h3>
+                    <div class="footnotes-list"></div>
+                </div>
+                
+                <div class="status-bar">
+                    <div class="word-count">Palavras: 7</div>
+                    <div class="syllable-info">Sílabas poéticas: 15</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Context Menu -->
+    <div class="context-menu" style="display: none;">
+        <div class="context-menu-item" id="add-footnote">Adicionar anotação</div>
+    </div>
+    
+    <!-- Footnote Modal -->
+    <div class="modal-overlay" id="footnote-modal">
+        <div class="modal">
+            <div class="modal-header">
+                <div class="modal-title">Adicionar Anotação</div>
+                <button class="modal-close">×</button>
+            </div>
+            <div class="modal-body">
+                <textarea id="footnote-text" placeholder="Digite sua anotação aqui..."></textarea>
+            </div>
+            <div class="modal-footer">
+                <button class="modal-button modal-button-secondary modal-close-btn">Cancelar</button>
+                <button class="modal-button modal-button-primary" id="save-footnote">Salvar</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Export Modal -->
+    <div class="modal-overlay" id="export-modal">
+        <div class="modal">
+            <div class="modal-header">
+                <div class="modal-title">Exportar Poema</div>
+                <button class="modal-close">×</button>
+            </div>
+            <div class="modal-body">
+                <p>Escolha o formato de exportação:</p>
+                <div class="export-options">
+                    <div class="export-option" data-format="txt">
+                        <div class="export-option-icon">.txt</div>
+                        <div>Texto</div>
+                    </div>
+                    <div class="export-option" data-format="html">
+                        <div class="export-option-icon">.html</div>
+                        <div>HTML</div>
+                    </div>
+                    <div class="export-option" data-format="md">
+                        <div class="export-option-icon">.md</div>
+                        <div>Markdown</div>
+                    </div>
+                    <div class="export-option" data-format="xml">
+                        <div class="export-option-icon">.xml</div>
+                        <div>XML</div>
+                    </div>
+                    <div class="export-option" data-format="pdf">
+                        <div class="export-option-icon">.pdf</div>
+                        <div>PDF</div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="modal-button modal-button-secondary modal-close-btn">Cancelar</button>
+                <button class="modal-button modal-button-primary" id="confirm-export">Exportar</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Poetry style definitions
+            const poetryStyles = {
+                'soneto': {
+                    name: 'Soneto',
+                    structure: '14 versos, divididos em 2 quartetos + 2 tercetos',
+                    metrics: 'Decassílabo (10 sílabas poéticas)',
+                    rhymeScheme: 'ABBA ABBA CDC DCD (Petrarquiano)',
+                    verseCount: 14,
+                    stanzaStructure: [4, 4, 3, 3],
+                    syllableCount: 10,
+                    rhymePattern: ['A','B','B','A','A','B','B','A','C','D','C','D','C','D']
+                },
+                'haicai': {
+                    name: 'Haicai',
+                    structure: '3 versos não rimados',
+                    metrics: '5-7-5 sílabas poéticas',
+                    rhymeScheme: 'Sem rima específica',
+                    verseCount: 3,
+                    stanzaStructure: [3],
+                    syllableCount: [5, 7, 5],
+                    rhymePattern: ['','','']
+                },
+                'ode': {
+                    name: 'Ode',
+                    structure: 'Estrofes regulares (geralmente quartetos)',
+                    metrics: 'Variável, geralmente decassílabo',
+                    rhymeScheme: 'Variável, geralmente ABAB',
+                    verseCount: 16,
+                    stanzaStructure: [4, 4, 4, 4],
+                    syllableCount: 10,
+                    rhymePattern: ['A','B','A','B','A','B','A','B','A','B','A','B','A','B','A','B']
+                },
+                'lirica': {
+                    name: 'Lírica',
+                    structure: 'Variável, geralmente estrofes curtas',
+                    metrics: 'Variável',
+                    rhymeScheme: 'Variável',
+                    verseCount: 12,
+                    stanzaStructure: [4, 4, 4],
+                    syllableCount: 0, // Livre
+                    rhymePattern: ['A','B','A','B','C','D','C','D','E','F','E','F']
+                },
+                'epico': {
+                    name: 'Épico',
+                    structure: 'Estrofes longas, geralmente oitavas',
+                    metrics: 'Decassílabo heroico',
+                    rhymeScheme: 'ABABABCC (oitava rima)',
+                    verseCount: 16,
+                    stanzaStructure: [8, 8],
+                    syllableCount: 10,
+                    rhymePattern: ['A','B','A','B','A','B','C','C','A','B','A','B','A','B','C','C']
+                },
+                'balada': {
+                    name: 'Balada',
+                    structure: 'Três oitavas e uma quadra final',
+                    metrics: 'Octossílabo ou decassílabo',
+                    rhymeScheme: 'ababbcbc para oitavas, bcbc para quadra',
+                    verseCount: 28,
+                    stanzaStructure: [8, 8, 8, 4],
+                    syllableCount: 8,
+                    rhymePattern: ['a','b','a','b','b','c','b','c','a','b','a','b','b','c','b','c','a','b','a','b','b','c','b','c','b','c','b','c']
+                },
+                'verso-livre': {
+                    name: 'Verso Livre',
+                    structure: 'Sem estrutura fixa',
+                    metrics: 'Sem métrica fixa',
+                    rhymeScheme: 'Sem esquema de rimas fixo',
+                    verseCount: 10,
+                    stanzaStructure: [10],
+                    syllableCount: 0, // Livre
+                    rhymePattern: Array(10).fill('')
+                },
+                // Outros estilos poéticos seguiriam o mesmo padrão
+                'villanelle': {
+                    name: 'Villanelle',
+                    structure: '19 versos em 6 estrofes (5 tercetos e 1 quarteto)',
+                    metrics: 'Variável, geralmente octossílabo ou decassílabo',
+                    rhymeScheme: 'ABA ABA ABA ABA ABA ABAA',
+                    verseCount: 19,
+                    stanzaStructure: [3, 3, 3, 3, 3, 4],
+                    syllableCount: 8,
+                    rhymePattern: ['A','B','A','A','B','A','A','B','A','A','B','A','A','B','A','A','B','A','A']
+                },
+                'acrostico': {
+                    name: 'Acróstico',
+                    structure: 'Variável, primeira letra de cada verso forma uma palavra/frase',
+                    metrics: 'Variável',
+                    rhymeScheme: 'Variável',
+                    verseCount: 8,
+                    stanzaStructure: [8],
+                    syllableCount: 0, // Livre
+                    rhymePattern: Array(8).fill(''),
+                    isAcrostic: true,
+                    acrosticWord: 'POESIA'
+                }
+                // Outros estilos seriam definidos de forma similar
+            };
+            
+            // Default to other styles if not explicitly defined
+            const poetryStyleElements = document.querySelectorAll('.poetry-style');
+            poetryStyleElements.forEach(el => {
+                const style = el.getAttribute('data-style');
+                if (!poetryStyles[style]) {
+                    poetryStyles[style] = {
+                        name: el.textContent,
+                        structure: 'Estrutura variável',
+                        metrics: 'Métrica variável',
+                        rhymeScheme: 'Esquema de rimas variável',
+                        verseCount: 10,
+                        stanzaStructure: [10],
+                        syllableCount: 0, // Livre
+                        rhymePattern: Array(10).fill('')
+                    };
+                }
+            });
+            
+            // Current state
+            let currentStyle = 'soneto';
+            let freeMode = false;
+            let footnotes = [];
+            let selectedExportFormat = 'txt';
+            let activeFormatting = {
+                bold: false,
+                italic: false,
+                underline: false,
+                strikethrough: false
+            };
+            
+            // DOM Elements
+            const editor = document.querySelector('.editor');
+            const lineNumbers = document.querySelector('.line-numbers');
+            const rhymeScheme = document.querySelector('.rhyme-scheme');
+            const styleInfo = document.querySelector('.style-info');
+            const toggleFreeModeBtn = document.querySelector('.toggle-free-mode');
+            const wordCount = document.querySelector('.word-count');
+            const syllableInfo = document.querySelector('.syllable-info');
+            const footnotesList = document.querySelector('.footnotes-list');
+            const footnotesContainer = document.querySelector('.footnotes-container');
+            const contextMenu = document.querySelector('.context-menu');
+            const footnoteModal = document.getElementById('footnote-modal');
+            const exportModal = document.getElementById('export-modal');
+            const titleInput = document.querySelector('.title-input');
+            
+            // Set primary color RGB for CSS variables
+            const primaryColorRGB = getComputedStyle(document.documentElement)
+                .getPropertyValue('--primary-color')
+                .trim()
+                .match(/^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i);
+                
+            if (primaryColorRGB) {
+                const r = parseInt(primaryColorRGB[1], 16);
+                const g = parseInt(primaryColorRGB[2], 16);
+                const b = parseInt(primaryColorRGB[3], 16);
+                document.documentElement.style.setProperty('--primary-color-rgb', `${r}, ${g}, ${b}`);
+            }
+            
+            // Theme selection
+            document.querySelectorAll('.theme-button').forEach(button => {
+                button.addEventListener('click', () => {
+                    document.querySelectorAll('.theme-button').forEach(btn => btn.classList.remove('active'));
+                    button.classList.add('active');
+                    
+                    const theme = button.getAttribute('data-theme');
+                    document.body.className = theme !== 'light' ? `theme-${theme}` : '';
+                    
+                    // Update primary color RGB for the new theme
+                    const newPrimaryColorRGB = getComputedStyle(document.documentElement)
+                        .getPropertyValue('--primary-color')
+                        .trim()
+                        .match(/^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i);
+                        
+                    if (newPrimaryColorRGB) {
+                        const r = parseInt(newPrimaryColorRGB[1], 16);
+                        const g = parseInt(newPrimaryColorRGB[2], 16);
+                        const b = parseInt(newPrimaryColorRGB[3], 16);
+                        document.documentElement.style.setProperty('--primary-color-rgb', `${r}, ${g}, ${b}`);
+                    }
+                });
+            });
+            
+            // Text formatting functions with toggle state
+            document.getElementById('bold').addEventListener('click', function() {
+                this.classList.toggle('active');
+                activeFormatting.bold = !activeFormatting.bold;
+                document.execCommand('bold', false, null);
+            });
+            
+            document.getElementById('italic').addEventListener('click', function() {
+                this.classList.toggle('active');
+                activeFormatting.italic = !activeFormatting.italic;
+                document.execCommand('italic', false, null);
+            });
+            
+            document.getElementById('underline').addEventListener('click', function() {
+                this.classList.toggle('active');
+                activeFormatting.underline = !activeFormatting.underline;
+                document.execCommand('underline', false, null);
+            });
+            
+            document.getElementById('strikethrough').addEventListener('click', function() {
+                this.classList.toggle('active');
+                activeFormatting.strikethrough = !activeFormatting.strikethrough;
+                document.execCommand('strikeThrough', false, null);
+            });
+            
+            // Alignment buttons
+            const alignButtons = ['align-left', 'align-center', 'align-right', 'align-justify'];
+            alignButtons.forEach(id => {
+                document.getElementById(id).addEventListener('click', function() {
+                    alignButtons.forEach(btnId => {
+                        document.getElementById(btnId).classList.remove('active');
+                    });
+                    this.classList.add('active');
+                    
+                    const command = id.replace('align-', 'justify');
+                    document.execCommand(command, false, null);
+                });
+            });
+            
+            // Color pickers with active state
+            let activeTextColor = '#000000';
+            let activeBgColor = '#ffffff';
+            
+            document.getElementById('text-color').addEventListener('input', (e) => {
+                activeTextColor = e.target.value;
+                document.execCommand('foreColor', false, activeTextColor);
+            });
+            
+            document.getElementById('bg-color').addEventListener('input', (e) => {
+                activeBgColor = e.target.value;
+                document.execCommand('hiliteColor', false, activeBgColor);
+            });
+            
+            // Font family change - update all system fonts
+            document.getElementById('font-family').addEventListener('change', (e) => {
+                const fontFamily = e.target.value;
+                document.execCommand('fontName', false, fontFamily);
+                
+                // Update system font
+                document.documentElement.style.setProperty('--font-family', `'${fontFamily}', sans-serif`);
+            });
+            
+            document.getElementById('font-size').addEventListener('change', (e) => {
+                document.execCommand('fontSize', false, 7); // Placeholder value
+                
+                // Apply actual font size to selection
+                const size = e.target.value;
+                const selection = window.getSelection();
+                if (selection.rangeCount > 0) {
+                    const range = selection.getRangeAt(0);
+                    const span = document.createElement('span');
+                    span.style.fontSize = size;
+                    
+                    // If nothing is selected, this won't do anything
+                    if (range.toString().length > 0) {
+                        range.surroundContents(span);
+                    }
+                }
+            });
+            
+            document.getElementById('undo').addEventListener('click', () => {
+                document.execCommand('undo', false, null);
+            });
+            
+            document.getElementById('redo').addEventListener('click', () => {
+                document.execCommand('redo', false, null);
+            });
+            
+            // Save and export functionality
+            document.getElementById('save').addEventListener('click', () => {
+                const title = titleInput.value || 'Poema sem título';
+                const content = editor.innerHTML;
+                const data = {
+                    title,
+                    content,
+                    style: currentStyle,
+                    footnotes,
+                    lastEdited: new Date().toISOString()
+                };
+                
+                localStorage.setItem('poetaScript_content', JSON.stringify(data));
+                alert('Poema salvo com sucesso!');
+            });
+            
+            document.getElementById('export').addEventListener('click', () => {
+                // Show export modal
+                exportModal.style.display = 'flex';
+            });
+            
+            // Export options selection
+            document.querySelectorAll('.export-option').forEach(option => {
+                option.addEventListener('click', () => {
+                    document.querySelectorAll('.export-option').forEach(opt => {
+                        opt.classList.remove('selected');
+                    });
+                    option.classList.add('selected');
+                    selectedExportFormat = option.getAttribute('data-format');
+                });
+            });
+            
+            // Confirm export
+            document.getElementById('confirm-export').addEventListener('click', () => {
+                const title = titleInput.value || 'Poema sem título';
+                const content = editor.innerHTML;
+                const plainText = editor.innerText;
+                
+                let exportContent = '';
+                let mimeType = 'text/plain';
+                let fileExtension = selectedExportFormat;
+                
+                switch (selectedExportFormat) {
+                    case 'txt':
+                        exportContent = plainText;
+                        break;
+                    case 'html':
+                        exportContent = `<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>${title}</title>
+    <style>
+        body { font-family: ${getComputedStyle(document.documentElement).getPropertyValue('--font-family')}; }
+        .poem-title { font-size: 24px; font-weight: bold; margin-bottom: 20px; }
+        .poem-content { white-space: pre-wrap; }
+        .footnotes { margin-top: 30px; border-top: 1px solid #ccc; padding-top: 10px; }
+        .footnote { font-size: 12px; font-style: italic; margin-bottom: 5px; }
+    </style>
+</head>
+<body>
+    <div class="poem-title">${title}</div>
+    <div class="poem-content">${content}</div>
+    ${footnotes.length > 0 ? `
+    <div class="footnotes">
+        <h3>Anotações</h3>
+        ${footnotes.map((note, index) => `
+        <div class="footnote">
+            <sup>${index + 1}</sup> ${note.text}
+        </div>`).join('')}
+    </div>` : ''}
+</body>
+</html>`;
+                        mimeType = 'text/html';
+                        break;
+                    case 'md':
+                        exportContent = `# ${title}\n\n`;
+                        
+                        // Convert HTML to Markdown (simplified)
+                        const tempDiv = document.createElement('div');
+                        tempDiv.innerHTML = content;
+                        
+                        const verses = tempDiv.querySelectorAll('.verse');
+                        verses.forEach(verse => {
+                            let line = verse.textContent;
+                            
+                            // Check for formatting
+                            if (verse.querySelector('strong')) {
+                                line = line.replace(/<strong>(.*?)<\/strong>/g, '**$1**');
+                            }
+                            if (verse.querySelector('em')) {
+                                line = line.replace(/<em>(.*?)<\/em>/g, '*$1*');
+                            }
+                            
+                            exportContent += line + '\n';
+                        });
+                        
+                        // Add footnotes
+                        if (footnotes.length > 0) {
+                            exportContent += '\n\n---\n\n';
+                            footnotes.forEach((note, index) => {
+                                exportContent += `[^${index + 1}]: ${note.text}\n`;
+                            });
+                        }
+                        break;
+                    case 'xml':
+                        exportContent = `<?xml version="1.0" encoding="UTF-8"?>
+<poem>
+    <title>${title}</title>
+    <style>${currentStyle}</style>
+    <content>
+        ${content.replace(/</g, '&lt;').replace(/>/g, '&gt;')}
+    </content>
+    ${footnotes.length > 0 ? `
+    <footnotes>
+        ${footnotes.map((note, index) => `
+        <footnote id="${index + 1}">
+            <text>${note.text}</text>
+            <reference>${note.reference}</reference>
+        </footnote>`).join('')}
+    </footnotes>` : ''}
+</poem>`;
+                        mimeType = 'application/xml';
+                        break;
+                    case 'pdf':
+                        alert('Exportação para PDF não está disponível nesta versão.');
+                        exportModal.style.display = 'none';
+                        return;
+                }
+                
+                const blob = new Blob([exportContent], { type: mimeType });
+                const url = URL.createObjectURL(blob);
+                
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `${title.replace(/\s+/g, '_').toLowerCase()}.${fileExtension}`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+                
+                exportModal.style.display = 'none';
+            });
+            
+            // Toggle free mode
+            toggleFreeModeBtn.addEventListener('click', () => {
+                freeMode = !freeMode;
+                toggleFreeModeBtn.textContent = `Modo Livre: ${freeMode ? 'Ativado' : 'Desativado'}`;
+                toggleFreeModeBtn.classList.toggle('active', freeMode);
+                updateEditor();
+            });
+            
+            // Poetry style selection
+            document.querySelectorAll('.poetry-style').forEach(style => {
+                style.addEventListener('click', () => {
+                    document.querySelector('.poetry-style.active').classList.remove('active');
+                    style.classList.add('active');
+                    currentStyle = style.getAttribute('data-style');
+                    updateEditor();
+                });
+            });
+            
+            // Context menu for footnotes
+            editor.addEventListener('contextmenu', function(e) {
+                e.preventDefault();
+                
+                // Get selection
+                const selection = window.getSelection();
+                if (selection.toString().length > 0) {
+                    // Position context menu
+                    contextMenu.style.left = `${e.pageX}px`;
+                    contextMenu.style.top = `${e.pageY}px`;
+                    contextMenu.style.display = 'block';
+                    
+                    // Store selection for later use
+                    window.currentSelection = {
+                        text: selection.toString(),
+                        range: selection.getRangeAt(0).cloneRange()
+                    };
+                }
+            });
+            
+            // Hide context menu on click elsewhere
+            document.addEventListener('click', function() {
+                contextMenu.style.display = 'none';
+            });
+            
+            // Add footnote from context menu
+            document.getElementById('add-footnote').addEventListener('click', function() {
+                footnoteModal.style.display = 'flex';
+            });
+            
+            // Close modals
+            document.querySelectorAll('.modal-close, .modal-close-btn').forEach(button => {
+                button.addEventListener('click', function() {
+                    footnoteModal.style.display = 'none';
+                    exportModal.style.display = 'none';
+                });
+            });
+            
+            // Save footnote
+            document.getElementById('save-footnote').addEventListener('click', function() {
+                const footnoteText = document.getElementById('footnote-text').value;
+                if (footnoteText.trim() === '') return;
+                
+                const footnoteIndex = footnotes.length;
+                const footnote = {
+                    id: footnoteIndex + 1,
+                    text: footnoteText,
+                    reference: window.currentSelection.text
+                };
+                
+                footnotes.push(footnote);
+                
+                // Insert footnote marker in text
+                const selection = window.getSelection();
+                const range = window.currentSelection.range;
+                
+                selection.removeAllRanges();
+                selection.addRange(range);
+                
+                const footnoteMarker = document.createElement('sup');
+                footnoteMarker.className = 'footnote-marker';
+                footnoteMarker.textContent = footnote.id;
+                footnoteMarker.setAttribute('data-footnote-id', footnote.id);
+                
+                range.deleteContents();
+                range.insertNode(footnoteMarker);
+                
+                // Add the original text back
+                const textNode = document.createTextNode(window.currentSelection.text);
+                range.insertNode(textNode);
+                
+                // Update footnotes list
+                updateFootnotesList();
+                
+                // Close modal and clear input
+                footnoteModal.style.display = 'none';
+                document.getElementById('footnote-text').value = '';
+            });
+            
+            // Update footnotes list
+            function updateFootnotesList() {
+                if (footnotes.length === 0) {
+                    footnotesContainer.style.display = 'none';
+                    return;
+                }
+                
+                footnotesContainer.style.display = 'block';
+                footnotesList.innerHTML = '';
+                
+                footnotes.forEach((footnote, index) => {
+                    const footnoteElement = document.createElement('div');
+                    footnoteElement.className = 'footnote';
+                    footnoteElement.innerHTML = `
+                        <div class="footnote-number">${footnote.id}.</div>
+                        <div class="footnote-text">${footnote.text}</div>
+                        <div class="footnote-actions">
+                            <button class="footnote-edit" data-id="${footnote.id}">Editar</button>
+                            <button class="footnote-delete" data-id="${footnote.id}">Excluir</button>
+                        </div>
+                    `;
+                    footnotesList.appendChild(footnoteElement);
+                });
+                
+                // Add event listeners for edit and delete buttons
+                document.querySelectorAll('.footnote-edit').forEach(button => {
+                    button.addEventListener('click', function() {
+                        const id = parseInt(this.getAttribute('data-id'));
+                        const footnote = footnotes.find(f => f.id === id);
+                        
+                        if (footnote) {
+                            document.getElementById('footnote-text').value = footnote.text;
+                            footnoteModal.style.display = 'flex';
+                            
+                            // Update save button to edit instead of create new
+                            const saveButton = document.getElementById('save-footnote');
+                            saveButton.textContent = 'Atualizar';
+                            saveButton.setAttribute('data-edit-id', id);
+                            
+                            // Add event listener for one-time edit
+                            const editHandler = function() {
+                                const editId = parseInt(this.getAttribute('data-edit-id'));
+                                const footnoteIndex = footnotes.findIndex(f => f.id === editId);
+                                
+                                if (footnoteIndex !== -1) {
+                                    footnotes[footnoteIndex].text = document.getElementById('footnote-text').value;
+                                    updateFootnotesList();
+                                }
+                                
+                                // Reset button
+                                this.textContent = 'Salvar';
+                                this.removeAttribute('data-edit-id');
+                                this.removeEventListener('click', editHandler);
+                                
+                                // Close modal
+                                footnoteModal.style.display = 'none';
+                                document.getElementById('footnote-text').value = '';
+                            };
+                            
+                            saveButton.addEventListener('click', editHandler, { once: true });
+                        }
+                    });
+                });
+                
+                document.querySelectorAll('.footnote-delete').forEach(button => {
+                    button.addEventListener('click', function() {
+                        const id = parseInt(this.getAttribute('data-id'));
+                        const footnoteIndex = footnotes.findIndex(f => f.id === id);
+                        
+                        if (footnoteIndex !== -1) {
+                            // Remove footnote
+                            footnotes.splice(footnoteIndex, 1);
+                            
+                            // Remove footnote marker from text
+                            const markers = editor.querySelectorAll(`.footnote-marker[data-footnote-id="${id}"]`);
+                            markers.forEach(marker => {
+                                marker.parentNode.removeChild(marker);
+                            });
+                            
+                            // Update remaining footnote IDs
+                            footnotes.forEach((footnote, index) => {
+                                footnote.id = index + 1;
+                                
+                                // Update markers in text
+                                const markers = editor.querySelectorAll(`.footnote-marker[data-footnote-id="${footnote.id}"]`);
+                                markers.forEach(marker => {
+                                    marker.textContent = footnote.id;
+                                    marker.setAttribute('data-footnote-id', footnote.id);
+                                });
+                            });
+                            
+                            updateFootnotesList();
+                        }
+                    });
+                });
+            }
+            
+            // Update editor based on selected style
+            function updateEditor() {
+                const style = poetryStyles[currentStyle];
+                
+                // Update style info
+                styleInfo.querySelector('h2 span').textContent = style.name;
+                styleInfo.querySelector('p:nth-child(2)').innerHTML = `<strong>Estrutura:</strong> ${style.structure}`;
+                styleInfo.querySelector('p:nth-child(3)').innerHTML = `<strong>Métrica:</strong> ${style.metrics}`;
+                styleInfo.querySelector('p:nth-child(4)').innerHTML = `<strong>Esquema de rimas:</strong> ${style.rhymeScheme}`;
+                
+                // Clear editor if not in free mode
+                if (!freeMode) {
+                    editor.innerHTML = '';
+                    lineNumbers.innerHTML = '';
+                    rhymeScheme.innerHTML = '';
+                    
+                    // Generate verse structure
+                    let lineCount = 1;
+                    style.stanzaStructure.forEach((stanzaLines, stanzaIndex) => {
+                        for (let i = 0; i < stanzaLines; i++) {
+                            // Add verse
+                            const verse = document.createElement('div');
+                            verse.className = 'verse';
+                            verse.setAttribute('data-line', lineCount);
+                            
+                            if (lineCount === 1) {
+                                verse.textContent = `Escreva aqui o primeiro verso ${style.name.toLowerCase() === 'soneto' ? 'do soneto' : ''}`;
+                            } else {
+                                verse.textContent = '';
+                            }
+                            
+                            editor.appendChild(verse);
+                            
+                            // Add line number and rhyme scheme together
+                            const lineNum = document.createElement('div');
+                            lineNum.textContent = lineCount;
+                            lineNumbers.appendChild(lineNum);
+                            
+                            const rhyme = document.createElement('div');
+                            if (style.rhymePattern && style.rhymePattern[lineCount-1]) {
+                                rhyme.textContent = style.rhymePattern[lineCount-1];
+                            } else {
+                                rhyme.textContent = '';
+                            }
+                            rhymeScheme.appendChild(rhyme);
+                            
+                            lineCount++;
+                        }
+                        
+                        // Add stanza break if not the last stanza
+                        if (stanzaIndex < style.stanzaStructure.length - 1) {
+                            const stanzaBreak = document.createElement('div');
+                            stanzaBreak.className = 'stanza-break';
+                            editor.appendChild(stanzaBreak);
+                            
+                            // Add empty line for spacing in line numbers and rhyme scheme
+                            const emptyLine = document.createElement('div');
+                            emptyLine.innerHTML = '&nbsp;';
+                            lineNumbers.appendChild(emptyLine);
+                            
+                            const emptyRhyme = document.createElement('div');
+                            emptyRhyme.innerHTML = '&nbsp;';
+                            rhymeScheme.appendChild(emptyRhyme);
+                        }
+                    });
+                    
+                    // Special handling for acrostic
+                    if (style.isAcrostic && style.acrosticWord) {
+                        const verses = editor.querySelectorAll('.verse');
+                        for (let i = 0; i < Math.min(verses.length, style.acrosticWord.length); i++) {
+                            const letter = style.acrosticWord[i];
+                            verses[i].textContent = letter + verses[i].textContent.substring(1);
+                        }
+                    }
+                } else if (editor.innerHTML === '') {
+                    // In free mode, if editor is empty, add a starting verse
+                    const verse = document.createElement('div');
+                    verse.className = 'verse';
+                    verse.setAttribute('data-line', 1);
+                    verse.textContent = 'Escreva livremente sua poesia aqui...';
+                    editor.appendChild(verse);
+                    
+                    // Add line number
+                    const lineNum = document.createElement('div');
+                    lineNum.textContent = 1;
+                    lineNumbers.appendChild(lineNum);
+                    
+                    // Add empty rhyme scheme
+                    const rhyme = document.createElement('div');
+                    rhyme.textContent = '';
+                    rhymeScheme.appendChild(rhyme);
+                }
+                
+                // Update syllable count for each verse
+                updateSyllableCounts();
+                
+                // Add event listener for Enter key to create new verses in free mode
+                if (freeMode) {
+                    editor.addEventListener('keydown', handleEditorKeydown);
+                } else {
+                    editor.removeEventListener('keydown', handleEditorKeydown);
+                }
+            }
+            
+            // Handle keydown in editor for free mode
+            function handleEditorKeydown(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    
+                    // Create a new verse
+                    const selection = window.getSelection();
+                    const range = selection.getRangeAt(0);
+                    
+                    // Find the current verse
+                    let currentVerse = range.startContainer;
+                    while (currentVerse && !currentVerse.classList?.contains('verse')) {
+                        currentVerse = currentVerse.parentNode;
+                    }
+                    
+                    if (currentVerse) {
+                        // Create new verse
+                        const newVerse = document.createElement('div');
+                        newVerse.className = 'verse';
+                        
+                        // Get the current line number
+                        const currentLine = parseInt(currentVerse.getAttribute('data-line'));
+                        newVerse.setAttribute('data-line', currentLine + 1);
+                        
+                        // Insert after current verse
+                        if (currentVerse.nextSibling) {
+                            editor.insertBefore(newVerse, currentVerse.nextSibling);
+                        } else {
+                            editor.appendChild(newVerse);
+                        }
+                        
+                        // Move cursor to new verse
+                        const newRange = document.createRange();
+                        newRange.setStart(newVerse, 0);
+                        newRange.collapse(true);
+                        
+                        selection.removeAllRanges();
+                        selection.addRange(newRange);
+                        
+                        // Update line numbers and rhyme scheme
+                        updateLineNumbers();
+                    }
+                }
+            }
+            
+            // Update line numbers and rhyme scheme in free mode
+            function updateLineNumbers() {
+                const verses = editor.querySelectorAll('.verse');
+                
+                // Clear line numbers and rhyme scheme
+                lineNumbers.innerHTML = '';
+                rhymeScheme.innerHTML = '';
+                
+                // Add new line numbers and empty rhyme scheme
+                verses.forEach((verse, index) => {
+                    verse.setAttribute('data-line', index + 1);
+                    
+                    const lineNum = document.createElement('div');
+                    lineNum.textContent = index + 1;
+                    lineNumbers.appendChild(lineNum);
+                    
+                    const rhyme = document.createElement('div');
+                    rhyme.textContent = '';
+                    rhymeScheme.appendChild(rhyme);
+                    
+                    // Add space for stanza breaks
+                    if (verse.nextSibling && verse.nextSibling.classList.contains('stanza-break')) {
+                        const emptyLine = document.createElement('div');
+                        emptyLine.innerHTML = '&nbsp;';
+                        lineNumbers.appendChild(emptyLine);
+                        
+                        const emptyRhyme = document.createElement('div');
+                        emptyRhyme.innerHTML = '&nbsp;';
+                        rhymeScheme.appendChild(emptyRhyme);
+                    }
+                });
+            }
+            
+            // Count syllables in Portuguese
+            function countSyllables(text) {
+                if (!text || text.trim() === '') return 0;
+                
+                // Remove HTML tags
+                text = text.replace(/<[^>]*>/g, '');
+                
+                // Remove punctuation and convert to lowercase
+                text = text.toLowerCase().replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, "");
+                
+                // Basic syllable counting for Portuguese
+                // This is a simplified version and doesn't handle all cases
+                const vowels = ['a', 'e', 'i', 'o', 'u', 'á', 'é', 'í', 'ó', 'ú', 'â', 'ê', 'î', 'ô', 'û', 'ã', 'õ'];
+                const diphthongs = ['ai', 'au', 'ei', 'eu', 'iu', 'oi', 'ou', 'ui', 'ão', 'ãe', 'õe'];
+                
+                // Replace diphthongs with single vowels for counting
+                diphthongs.forEach(diphthong => {
+                    text = text.replace(new RegExp(diphthong, 'g'), 'V');
+                });
+                
+                // Count remaining vowels
+                let count = 0;
+                let inVowelGroup = false;
+                
+                for (let i = 0; i < text.length; i++) {
+                    if (vowels.includes(text[i]) || text[i] === 'V') {
+                        if (!inVowelGroup) {
+                            count++;
+                            inVowelGroup = true;
+                        }
+                    } else {
+                        inVowelGroup = false;
+                    }
+                }
+                
+                // Adjust for poetic synalepha and other rules
+                // This is very simplified
+                
+                return count;
+            }
+            
+            // Update syllable counts for all verses
+            function updateSyllableCounts() {
+                const verses = editor.querySelectorAll('.verse');
+                const style = poetryStyles[currentStyle];
+                let totalSyllables = 0;
+                
+                verses.forEach((verse, index) => {
+                    const text = verse.textContent;
+                    const syllables = countSyllables(text);
+                    totalSyllables += syllables;
+                    
+                    // Update verse class based on syllable count
+                    if (!freeMode && style.syllableCount > 0) {
+                        if (Array.isArray(style.syllableCount)) {
+                            const lineIndex = parseInt(verse.getAttribute('data-line')) - 1;
+                            const targetSyllables = style.syllableCount[lineIndex % style.syllableCount.length];
+                            verse.classList.toggle('correct', syllables === targetSyllables);
+                            verse.classList.toggle('incorrect', syllables !== targetSyllables && syllables > 0);
+                        } else {
+                            verse.classList.toggle('correct', syllables === style.syllableCount);
+                            verse.classList.toggle('incorrect', syllables !== style.syllableCount && syllables > 0);
+                        }
+                    } else {
+                        verse.classList.remove('correct', 'incorrect');
+                    }
+                });
+                
+                // Update word count
+                const words = editor.textContent.trim().split(/\s+/).filter(word => word.length > 0).length;
+                wordCount.textContent = `Palavras: ${words}`;
+                
+                // Update syllable info
+                syllableInfo.textContent = `Sílabas poéticas: ${totalSyllables}`;
+            }
+            
+            // Listen for changes in the editor
+            editor.addEventListener('input', function() {
+                updateSyllableCounts();
+                
+                // In free mode, update line numbers if needed
+                if (freeMode) {
+                    const verses = editor.querySelectorAll('.verse');
+                    if (verses.length !== lineNumbers.children.length) {
+                        updateLineNumbers();
+                    }
+                }
+            });
+            
+            // Initialize editor
+            updateEditor();
+            
+            // Load saved content if available
+            const savedContent = localStorage.getItem('poetaScript_content');
+            if (savedContent) {
+                try {
+                    const data = JSON.parse(savedContent);
+                    titleInput.value = data.title || '';
+                    editor.innerHTML = data.content || '';
+                    
+                    if (data.footnotes) {
+                        footnotes = data.footnotes;
+                        updateFootnotesList();
+                    }
+                    
+                    if (data.style) {
+                        currentStyle = data.style;
+                        document.querySelectorAll('.poetry-style').forEach(style => {
+                            style.classList.toggle('active', style.getAttribute('data-style') === currentStyle);
+                        });
+                    }
+                    
+                    updateSyllableCounts();
+                } catch (e) {
+                    console.error('Error loading saved content:', e);
+                }
+            }
+        });
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'92f747c872e4a169',t:'MTc0NDUwODY4OC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script><iframe height="1" width="1" style="position: absolute; top: 0px; left: 0px; border: none; visibility: hidden;" src="./saved_resource(2).html"></iframe>
+<lt-toolbar contenteditable="false" data-lt-adjust-appearance="true" data-lt-force-appearance="light" style="display: none;"><lt-div class="lt-toolbar__wrapper" style="left: 1864px; position: absolute !important; top: 850px !important; bottom: auto !important; z-index: auto;"><lt-div class="lt-toolbar__status-icon lt-toolbar__status-icon--has-errors lt-toolbar__status-icon--has-1-errors" title=""></lt-div><lt-div class="lt-toolbar__premium-icon-dot"></lt-div></lt-div></lt-toolbar></body></html>
